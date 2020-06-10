@@ -1,0 +1,57 @@
+# The usual libraries------
+library(tidyverse)
+library(tidytext)
+# Also requires the following quanteda libraries,
+# You will need to install as usual.
+library(quanteda)
+library(quanteda.textmodels)
+
+# Script assumes you have ham/spam data in ham_spam data frame
+
+# ham/spam category in "label" and messages in "text" column.
+names(hamspam) <- c("label","text")
+
+
+# Check how many ham, how many spam.
+hamspam %>% group_by(label) %>% summarise(length(label))
+
+
+# Create corpus object for quanteda.
+hamspam_corpus <- corpus(hamspam)
+# If you want to view it (View doesn't work with corpus objects)
+summary(hamspam_corpus)
+
+
+# Create dfm matrix for analysis
+hamspam_dfm <- dfm(hamspam_corpus, tolower = TRUE)
+# More options for improvements, possibly useful later:
+# hamspam_dfm <- dfm_trim(hamspam_dfm, min_count = 5, min_docfreq = 3)
+#    would omit terms occurring less than 5 times or 
+#    in less than 3 documents
+# hamspam_dfm <- dfm_weight(hamspam_dfm, type = "tfidf")
+#    would use tf-idf as weights instead of frequencies
+
+
+# Get 75-25 train-test split.  Since 75% of our data
+# is 4180, and data randomized, split at 4180 should do it.
+hamspam_dfm_train <- hamspam_dfm[1:4180,]
+hamspam_dfm_test <- hamspam_dfm[4181:nrow(hamspam_dfm),]
+
+# Need to split original as well for ham/spam labels.
+hamspam_train <- hamspam[1:4180,]
+hamspam_test <- hamspam[4181:nrow(hamspam),]
+
+# Check split to be sure
+table(hamspam_train$label)
+# Checks out, ham/spam split very close to original. 
+
+
+# Ready to produce classifier.
+hamspam_classifier <- textmodel_nb(hamspam_dfm_train, hamspam_train$label)
+
+# How well does classifier do?
+# Let's get its predictions for test set.
+hamspam_pred <- predict(hamspam_classifier,newdata = hamspam_dfm_test)
+# Now check those predictions against actual labels.
+table(hamspam_pred, hamspam_test$label)
+# Pretty darn good.  That's 97% accuracy!
