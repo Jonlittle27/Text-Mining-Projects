@@ -41,7 +41,7 @@ round(sum(top_n(hgw_freq,50)$n)/sum(hgw_freq$n),3)
 round(sum(top_n(hgw_freq,75)$n)/sum(hgw_freq$n),3)
 
 ##Percentage Top 10/50/75 Words of the total - Bronte Sisters
-sum(bs_freq)
+sum(bs_freq$n)
 
 round(sum(top_n(bs_freq,10)$n)/sum(bs_freq$n),3)
 

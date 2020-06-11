@@ -4,6 +4,8 @@ library(gutenbergr)
 library(tidyverse)
 library(tidytext)
 
+#Gutenberg book downloads
+
 ##Import Austen Books
 
 ja_books <- gutenberg_download(c(161,1342,141,158,121,105))
@@ -16,22 +18,7 @@ hgw_books <- gutenberg_download(c(35,36,159,5230))
 
 bs_books <- gutenberg_download(c(767,768,969,1260,9182))
 
-## Filtering Jane Austen Book Titles
-filter(ja_books, gutenberg_id == 105)
-filter(ja_books, gutenberg_id == 121)
-filter(ja_books, gutenberg_id == 141)
-filter(ja_books, gutenberg_id == 158)
-filter(ja_books, gutenberg_id == 161)
-filter(ja_books, gutenberg_id == 1342)
-
-##Jane Austen Title Results:
-## Persuasion - ID 105
-## Northanger Abbey - ID 121
-## Mansfield Park - 141
-## Emma - ID 158
-## Sense and Sensibility - ID 161
-## Pride and Prejudice - ID 1342
-
+#Basic text tidying
 
 ##Tidy Austen Books
 ja_tidy <- ja_books %>%

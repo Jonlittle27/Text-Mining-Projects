@@ -1,8 +1,8 @@
 ##Libraries
+
 library(gutenbergr)
 library(tidyverse)
 library(tidytext)
-
 
 ##Import Austen Books
 
@@ -52,7 +52,7 @@ bs_word_freq <- mutate(bs_word_freq, bs_percent = n/741773)
 all_words_percents <- full_join(ja_word_freq,bs_word_freq, by = "word")%>%
   full_join(hgw_word_freq, by = "word")
 
-## all words percents no stop
+##Removing Stop Words
 
 all_words_percents_no_stop <- all_words_percents%>% anti_join(stop_words)
 
